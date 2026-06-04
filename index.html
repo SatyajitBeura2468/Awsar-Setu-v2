@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Awsar Setu v2 is a zero-login welfare routing portal for discovering central and state welfare schemes in India." />
+  <title>Awsar Setu v2 | Welfare Benefits Portal</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: "#1E3A8A",
+            emeraldTrust: "#047857",
+            amberCare: "#B45309"
+          },
+          boxShadow: {
+            premium: "0 18px 45px rgba(15, 23, 42, 0.08)",
+            lift: "0 24px 70px rgba(15, 23, 42, 0.13)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-width: 320px;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .focus-ring:focus {
+      outline: 4px solid rgba(30, 58, 138, 0.28);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-slate-200/80 glass">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8" aria-label="Primary navigation">
+      <a href="#" class="group inline-flex items-center gap-2 rounded-2xl focus-ring" aria-label="Awsar Setu v2 home">
+        <span class="text-2xl font-black tracking-tight text-navy sm:text-3xl">Awsar Setu</span>
+        <span class="relative inline-flex items-center gap-1">
+          <span class="text-lg font-extrabold text-slate-700">v2</span>
+          <span class="relative flex h-3 w-3">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emeraldTrust opacity-45"></span>
+            <span class="relative inline-flex h-3 w-3 rounded-full bg-emeraldTrust shadow-[0_0_18px_rgba(4,120,87,0.75)]"></span>
+          </span>
+        </span>
+      </a>
+
+      <div class="hidden rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-base font-bold text-emeraldTrust shadow-sm sm:block">
+        Official Public Portal • No Login Required Required Required
+      </div>
+
+      <div class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emeraldTrust shadow-sm sm:hidden" aria-label="No login required">
+        No Login
+      </div>
+    </nav>
+  </header>
+
+  <main class="min-h-screen pt-28">
+    <section class="relative overflow-hidden px-4 pb-12 pt-8 sm:px-6 lg:px-8">
+      <div class="pointer-events-none absolute inset-0 -z-10">
+        <div class="absolute left-1/2 top-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-100 blur-3xl"></div>
+        <div class="absolute right-10 top-44 h-72 w-72 rounded-full bg-emerald-100 blur-3xl"></div>
+      </div>
+
+      <div class="mx-auto max-w-5xl">
+        <div class="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-premium sm:p-8 lg:p-10">
+          <div class="mx-auto max-w-3xl text-center">
+            <p class="mb-3 inline-flex rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-base font-bold text-navy">
+              Zero-login welfare discovery
+            </p>
+            <h1 class="text-4xl font-black tracking-tight text-navy sm:text-5xl lg:text-6xl">
+              Find Your Welfare Benefits Instantly
+            </h1>
+            <p class="mx-auto mt-5 max-w-2xl text-lg font-medium leading-8 text-slate-600 sm:text-xl">
+              Enter your age and select your state to see your guaranteed national and regional yojanas.
+            </p>
+          </div>
+
+          <form id="schemeForm" class="mt-9" novalidate>
+            <div class="grid gap-5 lg:grid-cols-2">
+              <div>
+                <label for="ageInput" class="mb-3 block text-xl font-extrabold text-slate-800">
+                  Your Age
+                </label>
+                <input
+                  id="ageInput"
+                  name="age"
+                  type="number"
+                  inputmode="numeric"
+                  min="0"
+                  max="125"
+                  placeholder="e.g., 19"
+                  class="focus-ring h-20 w-full rounded-3xl border-2 border-slate-200 bg-white px-6 text-3xl font-black text-navy shadow-sm transition hover:border-blue-200"
+                  aria-describedby="ageHelp"
+                  required
+                />
+                <p id="ageHelp" class="mt-2 text-base font-medium text-slate-500">
+                  Use numbers only.
+                </p>
+              </div>
+
+              <div>
+                <label for="stateSelect" class="mb-3 block text-xl font-extrabold text-slate-800">
+                  Your State
+                </label>
+                <select
+                  id="stateSelect"
+                  name="state"
+                  class="focus-ring h-20 w-full appearance-none rounded-3xl border-2 border-slate-200 bg-white px-6 text-2xl font-black text-navy shadow-sm transition hover:border-emerald-200"
+                  required
+                >
+                  <option value="">Select your state</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="West Bengal">West Bengal</option>
+                </select>
+              </div>
+            </div>
+
+            <button
+              id="discoverBtn"
+              type="submit"
+              class="focus-ring mt-8 flex min-h-20 w-full items-center justify-center rounded-3xl bg-gradient-to-r from-blue-800 via-blue-700 to-blue-600 px-8 py-5 text-2xl font-black text-white shadow-xl shadow-blue-900/20 transition hover:-translate-y-0.5 hover:shadow-2xl active:translate-y-0 active:scale-[0.99]"
+            >
+              Discover My Schemes
+            </button>
+          </form>
+
+          <div id="statusBox" class="mt-6 hidden rounded-3xl border px-5 py-4 text-lg font-bold" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultsShell" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 opacity-45 grayscale transition duration-300" aria-label="Scheme results">
+      <div class="mb-6 rounded-3xl border border-slate-200 bg-white p-5 text-center shadow-sm">
+        <p id="resultsIntro" class="text-lg font-bold text-slate-600">
+          Results will become active after you enter your age and state.
+        </p>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-2">
+        <section class="rounded-[2rem] border border-slate-200 border-t-8 border-t-navy bg-white p-5 shadow-premium sm:p-6">
+          <div class="mb-5">
+            <h2 class="text-3xl font-black tracking-tight text-navy">
+              🇮🇳 Central & National Benefits
+            </h2>
+            <p class="mt-2 text-lg font-medium text-slate-600">
+              National schemes that may apply across India.
+            </p>
+          </div>
+
+          <div id="nationalResults" class="space-y-5">
+            <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <h3 class="text-2xl font-black text-navy">PM Scholarship Support Scheme</h3>
+                <span class="rounded-full bg-blue-50 px-3 py-1 text-sm font-black text-navy">Education Ministry</span>
+              </div>
+
+              <div class="mt-4 rounded-2xl bg-emerald-50 p-4">
+                <p class="text-sm font-black uppercase tracking-wide text-emeraldTrust">Financial Benefit</p>
+                <p class="mt-1 text-2xl font-black text-emeraldTrust">₹10,000 annually</p>
+              </div>
+
+              <div class="mt-4">
+                <h4 class="text-lg font-black text-slate-900">Core Eligibility</h4>
+                <ul class="mt-2 list-disc space-y-2 pl-6 text-lg font-medium text-slate-700">
+                  <li>Applicant must be an Indian citizen.</li>
+                  <li>Age and income rules depend on official scheme category.</li>
+                  <li>Valid identity and bank details required.</li>
+                </ul>
+              </div>
+
+              <div class="mt-5 rounded-2xl bg-amber-50 p-4">
+                <h4 class="text-lg font-black text-amberCare">How to Apply right now</h4>
+                <ul class="mt-2 list-disc space-y-2 pl-6 text-base font-bold text-amber-900">
+                  <li>Visit the nearest Post Office or Common Service Centre.</li>
+                  <li>Carry Aadhaar, bank passbook, income certificate, and photo.</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="rounded-[2rem] border border-slate-200 border-t-8 border-t-emeraldTrust bg-white p-5 shadow-premium sm:p-6">
+          <div class="mb-5">
+            <h2 id="stateBenefitsTitle" class="text-3xl font-black tracking-tight text-emeraldTrust">
+              🏛️ Regional & State Benefits
+            </h2>
+            <p class="mt-2 text-lg font-medium text-slate-600">
+              State-specific schemes based on your selected location.
+            </p>
+          </div>
+
+          <div id="stateResults" class="space-y-5">
+            <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <h3 class="text-2xl font-black text-navy">Odisha Youth Welfare Assistance</h3>
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-sm font-black text-emeraldTrust">State Department</span>
+              </div>
+
+              <div class="mt-4 rounded-2xl bg-emerald-50 p-4">
+                <p class="text-sm font-black uppercase tracking-wide text-emeraldTrust">Financial Benefit</p>
+                <p class="mt-1 text-2xl font-black text-emeraldTrust">Benefit varies by category</p>
+              </div>
+
+              <div class="mt-4">
+                <h4 class="text-lg font-black text-slate-900">Core Eligibility</h4>
+                <ul class="mt-2 list-disc space-y-2 pl-6 text-lg font-medium text-slate-700">
+                  <li>Resident of the selected state.</li>
+                  <li>Age group and income ceiling must match official criteria.</li>
+                  <li>Local documents may be required for verification.</li>
+                </ul>
+              </div>
+
+              <div class="mt-5 rounded-2xl bg-amber-50 p-4">
+                <h4 class="text-lg font-black text-amberCare">How to Apply right now</h4>
+                <ul class="mt-2 list-disc space-y-2 pl-6 text-base font-bold text-amber-900">
+                  <li>Visit Mo Seva Kendra or the nearest government service centre.</li>
+                  <li>Carry Aadhaar, residence proof, caste certificate if applicable, and bank details.</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white px-4 py-8 text-center sm:px-6 lg:px-8">
+    <p class="text-base font-bold text-slate-600">
+      Awsar Setu v2 helps users discover welfare routes. Final eligibility is decided only by official government rules.
+    </p>
+  </footer>
+
+  <script>
+    const form = document.getElementById("schemeForm");
+    const ageInput = document.getElementById("ageInput");
+    const stateSelect = document.getElementById("stateSelect");
+    const discoverBtn = document.getElementById("discoverBtn");
+    const statusBox = document.getElementById("statusBox");
+    const resultsShell = document.getElementById("resultsShell");
+    const resultsIntro = document.getElementById("resultsIntro");
+    const nationalResults = document.getElementById("nationalResults");
+    const stateResults = document.getElementById("stateResults");
+    const stateBenefitsTitle = document.getElementById("stateBenefitsTitle");
+
+    const API_BASE = "https://awsar-setu-v2.vercel.app/api/v2/schemes";
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const age = ageInput.value.trim();
+      const state = stateSelect.value.trim();
+
+      if (!age || Number(age) < 0 || Number(age) > 125 || !state) {
+        showStatus(
+          "Please enter a valid age and select your state. Small details matter, because bureaucracy already enjoys making life complicated.",
+          "warning"
+        );
+        return;
+      }
+
+      setLoading(true);
+      activateResults(state);
+
+      const requestUrl = `${API_BASE}?age=${encodeURIComponent(age)}&state=${encodeURIComponent(state)}`;
+
+      try {
+        const response = await fetch(requestUrl, {
+          method: "GET",
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server responded with status ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        const nationalSchemes = getArrayFromPossibleKeys(data, [
+          "national",
+          "central",
+          "nationalSchemes",
+          "centralSchemes",
+          "central_and_national",
+          "centralBenefits"
+        ]);
+
+        const stateSchemes = getArrayFromPossibleKeys(data, [
+          "state",
+          "regional",
+          "stateSchemes",
+          "regionalSchemes",
+          "stateBenefits",
+          "regionalBenefits"
+        ]);
+
+        nationalResults.innerHTML = "";
+        stateResults.innerHTML = "";
+
+        renderSchemeList(nationalSchemes, nationalResults, "national");
+        renderSchemeList(stateSchemes, stateResults, "state");
+
+        const totalMatches = nationalSchemes.length + stateSchemes.length;
+
+        if (totalMatches === 0) {
+          const message = "No matching schemes were found for this age tier. Please double-check your age and state, then try again.";
+          nationalResults.innerHTML = createEmptyBanner(message);
+          stateResults.innerHTML = createEmptyBanner("Try a different age or confirm the selected state spelling.");
+          showStatus(message, "warning");
+        } else {
+          showStatus(`Found ${totalMatches} possible benefit route${totalMatches === 1 ? "" : "s"} for age ${escapeHTML(age)} in ${escapeHTML(state)}.`, "success");
+        }
+      } catch (error) {
+        nationalResults.innerHTML = createEmptyBanner("We could not load central schemes right now. Please try again after a moment.");
+        stateResults.innerHTML = createEmptyBanner("We could not load state schemes right now. Your details were not saved.");
+        showStatus("Unable to connect to the scheme server right now. No login was used and no details were stored.", "error");
+        console.error("Awsar Setu API error:", error);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    function activateResults(state) {
+      resultsShell.classList.remove("opacity-45", "grayscale");
+      resultsShell.classList.add("opacity-100");
+      resultsIntro.textContent = `Showing welfare routes for ${state}.`;
+      stateBenefitsTitle.textContent = `🏛️ ${state} State Benefits`;
+    }
+
+    function setLoading(isLoading) {
+      discoverBtn.disabled = isLoading;
+      discoverBtn.classList.toggle("opacity-70", isLoading);
+      discoverBtn.classList.toggle("cursor-not-allowed", isLoading);
+      discoverBtn.textContent = isLoading ? "Checking Available Schemes..." : "Discover My Schemes";
+    }
+
+    function showStatus(message, type) {
+      const styles = {
+        success: "border-emerald-200 bg-emerald-50 text-emeraldTrust",
+        warning: "border-amber-200 bg-amber-50 text-amberCare",
+        error: "border-red-200 bg-red-50 text-red-700"
+      };
+
+      statusBox.className = `mt-6 rounded-3xl border px-5 py-4 text-lg font-bold ${styles[type] || styles.warning}`;
+      statusBox.textContent = message;
+      statusBox.classList.remove("hidden");
+    }
+
+    function getArrayFromPossibleKeys(data, keys) {
+      if (Array.isArray(data)) {
+        return data;
+      }
+
+      for (const key of keys) {
+        if (Array.isArray(data?.[key])) {
+          return data[key];
+        }
+      }
+
+      if (Array.isArray(data?.data)) {
+        return data.data;
+      }
+
+      if (typeof data?.data === "object" && data.data !== null) {
+        for (const key of keys) {
+          if (Array.isArray(data.data[key])) {
+            return data.data[key];
+          }
+        }
+      }
+
+      return [];
+    }
+
+    function renderSchemeList(schemes, container, type) {
+      if (!schemes.length) {
+        container.innerHTML = createEmptyBanner(
+          type === "national"
+            ? "No central schemes matched this entry."
+            : "No state schemes matched this entry."
+        );
+        return;
+      }
+
+      const html = schemes.map(function (scheme) {
+        return createSchemeCard(normalizeScheme(scheme));
+      }).join("");
+
+      container.innerHTML = html;
+    }
+
+    function normalizeScheme(scheme) {
+      const eligibility = toCleanArray(
+        scheme.eligibility ||
+        scheme.criteria ||
+        scheme.coreEligibility ||
+        scheme.eligibility_points ||
+        scheme.requirements
+      );
+
+      const applySteps = toCleanArray(
+        scheme.applySteps ||
+        scheme.applicationSteps ||
+        scheme.howToApply ||
+        scheme.apply_now ||
+        scheme.process
+      );
+
+      const documents = toCleanArray(
+        scheme.documents ||
+        scheme.requiredDocuments ||
+        scheme.required_docs ||
+        scheme.identityDocuments
+      );
+
+      return {
+        name: scheme.name || scheme.schemeName || scheme.title || "Unnamed Welfare Scheme",
+        department: scheme.department || scheme.ministry || scheme.authority || scheme.departmentName || "Government Department",
+        benefit: scheme.benefit || scheme.financialBenefit || scheme.cashBenefit || scheme.amount || "Benefit details available through official verification",
+        eligibility: eligibility.length ? eligibility : [
+          "Applicant must satisfy the official age and residence rules.",
+          "Income ceiling, gender category, caste category, or occupation rules may apply.",
+          "Final approval depends on government verification."
+        ],
+        applyLocation: scheme.applyLocation || scheme.location || scheme.office || "Nearest government service centre",
+        applySteps: applySteps.length ? applySteps : [
+          "Visit the nearest service centre or official department office.",
+          "Ask for the application form or online service route for this scheme."
+        ],
+        documents: documents.length ? documents : [
+          "Aadhaar card",
+          "Bank passbook",
+          "Residence proof",
+          "Income certificate if applicable",
+          "Passport-size photograph"
+        ]
+      };
+    }
+
+    function createSchemeCard(scheme) {
+      const eligibilityItems = scheme.eligibility.map(item => `<li>${escapeHTML(item)}</li>`).join("");
+      const applyItems = scheme.applySteps.map(item => `<li>${escapeHTML(item)}</li>`).join("");
+      const documentItems = scheme.documents.map(item => `<li>${escapeHTML(item)}</li>`).join("");
+
+      return `
+        <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lift">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <h3 class="text-2xl font-black leading-tight text-navy">${escapeHTML(scheme.name)}</h3>
+            <span class="rounded-full bg-blue-50 px-3 py-1 text-sm font-black text-navy">${escapeHTML(scheme.department)}</span>
+          </div>
+
+          <div class="mt-4 rounded-2xl bg-emerald-50 p-4 ring-1 ring-emerald-100">
+            <p class="text-sm font-black uppercase tracking-wide text-emeraldTrust">Financial Benefit</p>
+            <p class="mt-1 text-2xl font-black leading-snug text-emeraldTrust">${escapeHTML(scheme.benefit)}</p>
+          </div>
+
+          <div class="mt-5">
+            <h4 class="text-lg font-black text-slate-950">Core Eligibility</h4>
+            <ul class="mt-2 list-disc space-y-2 pl-6 text-lg font-medium leading-7 text-slate-700">
+              ${eligibilityItems}
+            </ul>
+          </div>
+
+          <div class="mt-5 rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-100">
+            <h4 class="text-lg font-black text-amberCare">How to Apply right now</h4>
+            <p class="mt-2 text-base font-black text-amber-950">
+              Visit: ${escapeHTML(scheme.applyLocation)}
+            </p>
+
+            <div class="mt-3 grid gap-4 sm:grid-cols-2">
+              <div>
+                <p class="text-sm font-black uppercase tracking-wide text-amberCare">Steps</p>
+                <ul class="mt-2 list-disc space-y-2 pl-5 text-base font-bold leading-6 text-amber-950">
+                  ${applyItems}
+                </ul>
+              </div>
+
+              <div>
+                <p class="text-sm font-black uppercase tracking-wide text-amberCare">Documents</p>
+                <ul class="mt-2 list-disc space-y-2 pl-5 text-base font-bold leading-6 text-amber-950">
+                  ${documentItems}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function createEmptyBanner(message) {
+      return `
+        <div class="rounded-3xl border border-amber-200 bg-amber-50 p-5 text-lg font-bold leading-7 text-amberCare">
+          ${escapeHTML(message)}
+        </div>
+      `;
+    }
+
+    function toCleanArray(value) {
+      if (Array.isArray(value)) {
+        return value.filter(Boolean).map(item => String(item).trim()).filter(Boolean);
+      }
+
+      if (typeof value === "string") {
+        return value
+          .split(/\n|;|\|/g)
+          .map(item => item.trim())
+          .filter(Boolean);
+      }
+
+      return [];
+    }
+
+    function escapeHTML(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
