@@ -1,5 +1,7 @@
-from fastapi import FastAPI, HTTPException, Query
-from typing import List, Dict, Any, Optional
+import os
+from fastapi import FastAPI, Query
+from fastapi.responses import HTMLResponse
+from typing import List, Dict, Any
 
 app = FastAPI(
     title="Awsar Setu API",
@@ -7,7 +9,7 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# Mega-Database Matrix (In-Memory structured data for instant execution)
+# Mega-Database Matrix
 SCHEMES_DATABASE: List[Dict[str, Any]] = [
     {
         "id": 1,
@@ -77,28 +79,27 @@ SCHEMES_DATABASE: List[Dict[str, Any]] = [
     }
 ]
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def read_root():
-    return {"status": "online", "platform": "Awsar Setu v2", "branding": "Stealth Production"}
+    """Serves the premium index.html visual interface at the root URL path."""
+    filepath = os.path.join(os.path.dirname(__file__), "index.html")
+    if os.path.exists(filepath):
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read()
+    return "<h1>Awsar Setu UI file loading... Refresh repository or deploy updates.</h1>"
 
 @app.get("/api/v2/schemes")
 def get_personalized_schemes(
     age: int = Query(..., description="Age of the applicant"),
-    state: str = Query(..., description="Two-letter state code, e.g., OR for Odisha")
+    state: str = Query(..., description="Two letter state code, e.g., OR for Odisha")
 ):
-    """
-    Core feature: Automatically aggregates and separates schemes into 
-    National and State-specific sections instantly based on the user's age.
-    """
     state_upper = state.upper()
     
-    # Filter National schemes matching age requirements
     national_schemes = [
         scheme for scheme in SCHEMES_DATABASE
         if scheme["level"] == "NATIONAL" and scheme["min_age"] <= age <= scheme["max_age"]
     ]
     
-    # Filter State-specific schemes matching age and state location requirements
     state_schemes = [
         scheme for scheme in SCHEMES_DATABASE
         if scheme["level"] == "STATE" and scheme["state_code"] == state_upper and scheme["min_age"] <= age <= scheme["max_age"]
