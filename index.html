@@ -3,569 +3,1031 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Awsar Setu v2 is a zero-login welfare routing portal for discovering central and state welfare schemes in India." />
-  <title>Awsar Setu v2 | Welfare Benefits Portal</title>
-
+  <title>Awsar Setu v2 — National Welfare Benefits Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            navy: "#1E3A8A",
-            emeraldTrust: "#047857",
-            amberCare: "#B45309"
+            navy: { DEFAULT: '#1E3A8A', 50: '#EFF6FF', 100: '#DBEAFE', 600: '#2563EB', 700: '#1D4ED8', 800: '#162B6B' },
+            jade: { DEFAULT: '#047857', 50: '#ECFDF5', 100: '#D1FAE5', 600: '#059669', 700: '#065F46' },
+            saffron: { DEFAULT: '#B45309', 50: '#FFFBEB', 100: '#FEF3C7', 600: '#D97706', 700: '#92400E' },
           },
-          boxShadow: {
-            premium: "0 18px 45px rgba(15, 23, 42, 0.08)",
-            lift: "0 24px 70px rgba(15, 23, 42, 0.13)"
+          fontFamily: {
+            display: ['"DM Serif Display"', 'Georgia', 'serif'],
+            body: ['"Outfit"', 'system-ui', 'sans-serif'],
           }
         }
       }
-    };
+    }
   </script>
-
   <style>
-    :root {
-      color-scheme: light;
+    *, body { font-family: 'Outfit', system-ui, sans-serif; }
+    body { background: #F8FAFC; }
+
+    /* ── Glass Nav ── */
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border-bottom: 1px solid rgba(30, 58, 138, 0.09);
+      box-shadow: 0 4px 32px rgba(30, 58, 138, 0.06);
     }
 
-    html {
-      scroll-behavior: smooth;
+    /* ── Glowing emerald dot ── */
+    .live-dot {
+      width: 9px; height: 9px;
+      background: #047857;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.22);
+      animation: livePulse 2.2s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(4,120,87,0.22), 0 0 10px rgba(4,120,87,0.35); }
+      50%       { box-shadow: 0 0 0 7px rgba(4,120,87,0.08), 0 0 18px rgba(4,120,87,0.55); }
     }
 
-    body {
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-width: 320px;
+    /* ── Hero gradient ── */
+    .hero-bg {
+      background: linear-gradient(160deg, #EFF6FF 0%, #F0FDF4 45%, #FFFBEB 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(37, 99, 235, 0.07) 0%, transparent 70%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, #F8FAFC);
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+    /* ── Intake panel ── */
+    .intake-card {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 12px 60px rgba(30, 58, 138, 0.11), 0 2px 10px rgba(30, 58, 138, 0.06);
+      border: 1px solid rgba(30, 58, 138, 0.09);
+      position: relative;
+      z-index: 1;
     }
 
-    .focus-ring:focus {
-      outline: 4px solid rgba(30, 58, 138, 0.28);
-      outline-offset: 3px;
+    /* ── Input fields ── */
+    .field {
+      border: 2.5px solid #E2E8F0;
+      border-radius: 16px;
+      background: #F8FAFC;
+      color: #1E3A8A;
+      font-weight: 600;
+      font-size: 19px;
+      font-family: 'Outfit', sans-serif;
+      width: 100%;
+      padding: 18px 22px;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+    .field:focus {
+      outline: none;
+      border-color: #1E3A8A;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.11);
+    }
+    .field.error {
+      border-color: #DC2626;
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.10);
+    }
+    select.field {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%231E3A8A' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.8' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 18px center;
+      background-size: 22px;
+      padding-right: 52px;
+      cursor: pointer;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        scroll-behavior: auto !important;
-        transition: none !important;
-        animation: none !important;
-      }
+    /* ── Discover button ── */
+    .btn-discover {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 55%, #1D4ED8 100%);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 20px 32px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 8px 28px rgba(30, 58, 138, 0.38);
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s;
+      letter-spacing: 0.01em;
     }
+    .btn-discover:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(30,58,138,0.48); }
+    .btn-discover:active { transform: translateY(-1px); }
+    .btn-discover:disabled { opacity: 0.75; cursor: not-allowed; transform: none; }
+
+    /* ── Results reveal ── */
+    #resultsSection {
+      opacity: 0;
+      transform: translateY(28px);
+      pointer-events: none;
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    #resultsSection.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* ── Column headers ── */
+    .col-header-national { border-left: 5px solid #1E3A8A; padding-left: 16px; }
+    .col-header-state    { border-left: 5px solid #047857; padding-left: 16px; }
+
+    /* ── Scheme card ── */
+    .scheme-card {
+      background: white;
+      border-radius: 20px;
+      border: 1px solid rgba(30, 58, 138, 0.08);
+      box-shadow: 0 3px 18px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      animation: cardIn 0.45s ease forwards;
+    }
+    .scheme-card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(30,58,138,0.13); }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .scheme-card:nth-child(1) { animation-delay: 0.04s; }
+    .scheme-card:nth-child(2) { animation-delay: 0.10s; }
+    .scheme-card:nth-child(3) { animation-delay: 0.16s; }
+    .scheme-card:nth-child(4) { animation-delay: 0.22s; }
+    .scheme-card:nth-child(5) { animation-delay: 0.28s; }
+
+    /* ── Benefit banner ── */
+    .benefit-bar {
+      background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+      border: 1px solid rgba(4, 120, 87, 0.14);
+      border-radius: 14px;
+    }
+
+    /* ── Apply section ── */
+    .apply-strip {
+      background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+      border-top: 1px solid rgba(180, 83, 9, 0.11);
+    }
+
+    /* ── Loading spinner ── */
+    .spinner {
+      width: 22px; height: 22px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Tag pill ── */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 4px 11px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    /* ── Trust strip ── */
+    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #94A3B8; }
+
+    /* ── Footer ── */
+    footer { background: white; border-top: 1px solid rgba(30,58,138,0.07); }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
   </style>
 </head>
+<body>
 
-<body class="bg-slate-50 text-slate-900 antialiased">
-  <header class="fixed inset-x-0 top-0 z-50 border-b border-slate-200/80 glass">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8" aria-label="Primary navigation">
-      <a href="#" class="group inline-flex items-center gap-2 rounded-2xl focus-ring" aria-label="Awsar Setu v2 home">
-        <span class="text-2xl font-black tracking-tight text-navy sm:text-3xl">Awsar Setu</span>
-        <span class="relative inline-flex items-center gap-1">
-          <span class="text-lg font-extrabold text-slate-700">v2</span>
-          <span class="relative flex h-3 w-3">
-            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emeraldTrust opacity-45"></span>
-            <span class="relative inline-flex h-3 w-3 rounded-full bg-emeraldTrust shadow-[0_0_18px_rgba(4,120,87,0.75)]"></span>
-          </span>
+  <!-- ═══════════════════════════════════════════ STICKY NAV -->
+  <nav class="glass-nav fixed top-0 left-0 right-0 z-50 px-5 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <span style="font-family:'DM Serif Display',serif; font-size:26px; color:#1E3A8A; letter-spacing:-0.02em; font-weight:400;">
+          Awsar Setu
         </span>
-      </a>
-
-      <div class="hidden rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-base font-bold text-emeraldTrust shadow-sm sm:block">
-        Official Public Portal • No Login Required Required Required
-      </div>
-
-      <div class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emeraldTrust shadow-sm sm:hidden" aria-label="No login required">
-        No Login
-      </div>
-    </nav>
-  </header>
-
-  <main class="min-h-screen pt-28">
-    <section class="relative overflow-hidden px-4 pb-12 pt-8 sm:px-6 lg:px-8">
-      <div class="pointer-events-none absolute inset-0 -z-10">
-        <div class="absolute left-1/2 top-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-100 blur-3xl"></div>
-        <div class="absolute right-10 top-44 h-72 w-72 rounded-full bg-emerald-100 blur-3xl"></div>
-      </div>
-
-      <div class="mx-auto max-w-5xl">
-        <div class="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-premium sm:p-8 lg:p-10">
-          <div class="mx-auto max-w-3xl text-center">
-            <p class="mb-3 inline-flex rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-base font-bold text-navy">
-              Zero-login welfare discovery
-            </p>
-            <h1 class="text-4xl font-black tracking-tight text-navy sm:text-5xl lg:text-6xl">
-              Find Your Welfare Benefits Instantly
-            </h1>
-            <p class="mx-auto mt-5 max-w-2xl text-lg font-medium leading-8 text-slate-600 sm:text-xl">
-              Enter your age and select your state to see your guaranteed national and regional yojanas.
-            </p>
-          </div>
-
-          <form id="schemeForm" class="mt-9" novalidate>
-            <div class="grid gap-5 lg:grid-cols-2">
-              <div>
-                <label for="ageInput" class="mb-3 block text-xl font-extrabold text-slate-800">
-                  Your Age
-                </label>
-                <input
-                  id="ageInput"
-                  name="age"
-                  type="number"
-                  inputmode="numeric"
-                  min="0"
-                  max="125"
-                  placeholder="e.g., 19"
-                  class="focus-ring h-20 w-full rounded-3xl border-2 border-slate-200 bg-white px-6 text-3xl font-black text-navy shadow-sm transition hover:border-blue-200"
-                  aria-describedby="ageHelp"
-                  required
-                />
-                <p id="ageHelp" class="mt-2 text-base font-medium text-slate-500">
-                  Use numbers only.
-                </p>
-              </div>
-
-              <div>
-                <label for="stateSelect" class="mb-3 block text-xl font-extrabold text-slate-800">
-                  Your State
-                </label>
-                <select
-                  id="stateSelect"
-                  name="state"
-                  class="focus-ring h-20 w-full appearance-none rounded-3xl border-2 border-slate-200 bg-white px-6 text-2xl font-black text-navy shadow-sm transition hover:border-emerald-200"
-                  required
-                >
-                  <option value="">Select your state</option>
-                  <option value="Andhra Pradesh">Andhra Pradesh</option>
-                  <option value="Assam">Assam</option>
-                  <option value="Bihar">Bihar</option>
-                  <option value="Chhattisgarh">Chhattisgarh</option>
-                  <option value="Delhi">Delhi</option>
-                  <option value="Gujarat">Gujarat</option>
-                  <option value="Haryana">Haryana</option>
-                  <option value="Jharkhand">Jharkhand</option>
-                  <option value="Karnataka">Karnataka</option>
-                  <option value="Kerala">Kerala</option>
-                  <option value="Madhya Pradesh">Madhya Pradesh</option>
-                  <option value="Maharashtra">Maharashtra</option>
-                  <option value="Odisha">Odisha</option>
-                  <option value="Punjab">Punjab</option>
-                  <option value="Rajasthan">Rajasthan</option>
-                  <option value="Tamil Nadu">Tamil Nadu</option>
-                  <option value="Telangana">Telangana</option>
-                  <option value="Uttar Pradesh">Uttar Pradesh</option>
-                  <option value="West Bengal">West Bengal</option>
-                </select>
-              </div>
-            </div>
-
-            <button
-              id="discoverBtn"
-              type="submit"
-              class="focus-ring mt-8 flex min-h-20 w-full items-center justify-center rounded-3xl bg-gradient-to-r from-blue-800 via-blue-700 to-blue-600 px-8 py-5 text-2xl font-black text-white shadow-xl shadow-blue-900/20 transition hover:-translate-y-0.5 hover:shadow-2xl active:translate-y-0 active:scale-[0.99]"
-            >
-              Discover My Schemes
-            </button>
-          </form>
-
-          <div id="statusBox" class="mt-6 hidden rounded-3xl border px-5 py-4 text-lg font-bold" role="status" aria-live="polite"></div>
+        <div class="flex items-center gap-1.5">
+          <span class="pill" style="background:#1E3A8A; color:white; font-size:10px; font-weight:800; letter-spacing:0.08em;">v2</span>
+          <span class="live-dot"></span>
         </div>
       </div>
-    </section>
 
-    <section id="resultsShell" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 opacity-45 grayscale transition duration-300" aria-label="Scheme results">
-      <div class="mb-6 rounded-3xl border border-slate-200 bg-white p-5 text-center shadow-sm">
-        <p id="resultsIntro" class="text-lg font-bold text-slate-600">
-          Results will become active after you enter your age and state.
+      <!-- Official badge -->
+      <div class="hidden sm:flex items-center gap-2.5 bg-white border rounded-full px-4 py-2" style="border-color:rgba(30,58,138,0.12); box-shadow:0 2px 10px rgba(30,58,138,0.06);">
+        <span class="live-dot" style="width:7px;height:7px;"></span>
+        <span style="font-size:12.5px; font-weight:700; color:#1E3A8A; letter-spacing:0.03em;">
+          Official Public Portal &nbsp;•&nbsp; No Login Required
+        </span>
+      </div>
+
+      <!-- Mobile badge -->
+      <div class="flex sm:hidden items-center gap-1.5">
+        <span class="live-dot"></span>
+        <span style="font-size:11px; font-weight:700; color:#1E3A8A;">No Login</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════ HERO SECTION -->
+  <section class="hero-bg pt-28 pb-20 px-4">
+    <div class="max-w-4xl mx-auto relative z-10">
+
+      <!-- Eyebrow -->
+      <div class="flex justify-center mb-7">
+        <div class="inline-flex items-center gap-2 bg-white border rounded-full px-5 py-2.5" style="border-color:rgba(4,120,87,0.18); box-shadow:0 2px 12px rgba(4,120,87,0.08);">
+          <span style="font-size:15px;">🇮🇳</span>
+          <span style="font-size:13.5px; font-weight:600; color:#047857;">Powered by Ministry of Social Justice & Empowerment</span>
+        </div>
+      </div>
+
+      <!-- Headline -->
+      <div class="text-center mb-10">
+        <h1 style="font-family:'DM Serif Display',serif; font-size:clamp(32px,5vw,54px); color:#1E3A8A; line-height:1.15; letter-spacing:-0.02em;" class="mb-5">
+          Find Your Welfare<br />Benefits <em>Instantly</em>
+        </h1>
+        <p style="font-size:18px; color:#64748B; max-width:560px; margin:0 auto; line-height:1.7;">
+          Enter your age and select your state to see your guaranteed national and regional yojanas — no paperwork, no confusion, no login.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <section class="rounded-[2rem] border border-slate-200 border-t-8 border-t-navy bg-white p-5 shadow-premium sm:p-6">
-          <div class="mb-5">
-            <h2 class="text-3xl font-black tracking-tight text-navy">
-              🇮🇳 Central & National Benefits
-            </h2>
-            <p class="mt-2 text-lg font-medium text-slate-600">
-              National schemes that may apply across India.
-            </p>
+      <!-- ── Intake Card ── -->
+      <div class="intake-card px-8 py-10 md:px-12 md:py-12">
+
+        <!-- Two inputs -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+          <!-- Age input -->
+          <div>
+            <label style="display:block; font-size:12.5px; font-weight:800; letter-spacing:0.1em; color:#94A3B8; text-transform:uppercase; margin-bottom:10px;">
+              Your Age
+            </label>
+            <input
+              type="number"
+              id="ageInput"
+              class="field"
+              placeholder="e.g., 19"
+              min="1"
+              max="120"
+            />
+            <p style="font-size:13px; color:#CBD5E1; margin-top:8px;">Enter your current age in whole years</p>
           </div>
 
-          <div id="nationalResults" class="space-y-5">
-            <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="flex flex-wrap items-start justify-between gap-3">
-                <h3 class="text-2xl font-black text-navy">PM Scholarship Support Scheme</h3>
-                <span class="rounded-full bg-blue-50 px-3 py-1 text-sm font-black text-navy">Education Ministry</span>
-              </div>
-
-              <div class="mt-4 rounded-2xl bg-emerald-50 p-4">
-                <p class="text-sm font-black uppercase tracking-wide text-emeraldTrust">Financial Benefit</p>
-                <p class="mt-1 text-2xl font-black text-emeraldTrust">₹10,000 annually</p>
-              </div>
-
-              <div class="mt-4">
-                <h4 class="text-lg font-black text-slate-900">Core Eligibility</h4>
-                <ul class="mt-2 list-disc space-y-2 pl-6 text-lg font-medium text-slate-700">
-                  <li>Applicant must be an Indian citizen.</li>
-                  <li>Age and income rules depend on official scheme category.</li>
-                  <li>Valid identity and bank details required.</li>
-                </ul>
-              </div>
-
-              <div class="mt-5 rounded-2xl bg-amber-50 p-4">
-                <h4 class="text-lg font-black text-amberCare">How to Apply right now</h4>
-                <ul class="mt-2 list-disc space-y-2 pl-6 text-base font-bold text-amber-900">
-                  <li>Visit the nearest Post Office or Common Service Centre.</li>
-                  <li>Carry Aadhaar, bank passbook, income certificate, and photo.</li>
-                </ul>
-              </div>
-            </article>
+          <!-- State dropdown -->
+          <div>
+            <label style="display:block; font-size:12.5px; font-weight:800; letter-spacing:0.1em; color:#94A3B8; text-transform:uppercase; margin-bottom:10px;">
+              Your State / UT
+            </label>
+            <select id="stateSelect" class="field" style="font-size:17px;">
+              <option value="">Select your state...</option>
+              <option>Andhra Pradesh</option>
+              <option>Arunachal Pradesh</option>
+              <option>Assam</option>
+              <option>Bihar</option>
+              <option>Chhattisgarh</option>
+              <option>Delhi</option>
+              <option>Goa</option>
+              <option>Gujarat</option>
+              <option>Haryana</option>
+              <option>Himachal Pradesh</option>
+              <option>Jammu &amp; Kashmir</option>
+              <option>Jharkhand</option>
+              <option>Karnataka</option>
+              <option>Kerala</option>
+              <option>Ladakh</option>
+              <option>Madhya Pradesh</option>
+              <option>Maharashtra</option>
+              <option>Manipur</option>
+              <option>Meghalaya</option>
+              <option>Mizoram</option>
+              <option>Nagaland</option>
+              <option>Odisha</option>
+              <option>Punjab</option>
+              <option>Rajasthan</option>
+              <option>Sikkim</option>
+              <option>Tamil Nadu</option>
+              <option>Telangana</option>
+              <option>Tripura</option>
+              <option>Uttar Pradesh</option>
+              <option>Uttarakhand</option>
+              <option>West Bengal</option>
+            </select>
+            <p style="font-size:13px; color:#CBD5E1; margin-top:8px;">Select the state where you currently reside</p>
           </div>
-        </section>
+        </div>
 
-        <section class="rounded-[2rem] border border-slate-200 border-t-8 border-t-emeraldTrust bg-white p-5 shadow-premium sm:p-6">
-          <div class="mb-5">
-            <h2 id="stateBenefitsTitle" class="text-3xl font-black tracking-tight text-emeraldTrust">
-              🏛️ Regional & State Benefits
-            </h2>
-            <p class="mt-2 text-lg font-medium text-slate-600">
-              State-specific schemes based on your selected location.
-            </p>
+        <!-- CTA Button -->
+        <button id="discoverBtn" class="btn-discover" type="button">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          Discover My Schemes
+        </button>
+
+        <!-- Trust bar -->
+        <div style="display:flex; flex-wrap:wrap; gap:28px; justify-content:center; margin-top:28px; padding-top:24px; border-top:1px solid rgba(30,58,138,0.07);">
+          <div class="trust-item">
+            <svg width="17" height="17" fill="#047857" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            100% Secure &amp; Private
           </div>
-
-          <div id="stateResults" class="space-y-5">
-            <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="flex flex-wrap items-start justify-between gap-3">
-                <h3 class="text-2xl font-black text-navy">Odisha Youth Welfare Assistance</h3>
-                <span class="rounded-full bg-emerald-50 px-3 py-1 text-sm font-black text-emeraldTrust">State Department</span>
-              </div>
-
-              <div class="mt-4 rounded-2xl bg-emerald-50 p-4">
-                <p class="text-sm font-black uppercase tracking-wide text-emeraldTrust">Financial Benefit</p>
-                <p class="mt-1 text-2xl font-black text-emeraldTrust">Benefit varies by category</p>
-              </div>
-
-              <div class="mt-4">
-                <h4 class="text-lg font-black text-slate-900">Core Eligibility</h4>
-                <ul class="mt-2 list-disc space-y-2 pl-6 text-lg font-medium text-slate-700">
-                  <li>Resident of the selected state.</li>
-                  <li>Age group and income ceiling must match official criteria.</li>
-                  <li>Local documents may be required for verification.</li>
-                </ul>
-              </div>
-
-              <div class="mt-5 rounded-2xl bg-amber-50 p-4">
-                <h4 class="text-lg font-black text-amberCare">How to Apply right now</h4>
-                <ul class="mt-2 list-disc space-y-2 pl-6 text-base font-bold text-amber-900">
-                  <li>Visit Mo Seva Kendra or the nearest government service centre.</li>
-                  <li>Carry Aadhaar, residence proof, caste certificate if applicable, and bank details.</li>
-                </ul>
-              </div>
-            </article>
+          <div class="trust-item">
+            <svg width="17" height="17" fill="#047857" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4" stroke="white" stroke-width="2" fill="none"/></svg>
+            Zero Login Required
           </div>
-        </section>
+          <div class="trust-item">
+            <svg width="17" height="17" fill="#047857" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            Government Verified Data
+          </div>
+        </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <footer class="border-t border-slate-200 bg-white px-4 py-8 text-center sm:px-6 lg:px-8">
-    <p class="text-base font-bold text-slate-600">
-      Awsar Setu v2 helps users discover welfare routes. Final eligibility is decided only by official government rules.
-    </p>
+  <!-- ═══════════════════════════════════════════ RESULTS SECTION -->
+  <section id="resultsSection" style="padding:64px 16px 80px;">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Section header -->
+      <div style="text-align:center; margin-bottom:48px;">
+        <h2 style="font-family:'DM Serif Display',serif; font-size:clamp(26px,4vw,38px); color:#1E3A8A; margin-bottom:10px;">
+          Your Eligible Schemes
+        </h2>
+        <p id="resultsSubtitle" style="font-size:17px; color:#64748B;"></p>
+      </div>
+
+      <!-- Two-column grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+        <!-- National Column -->
+        <div>
+          <div class="col-header-national" style="margin-bottom:28px;">
+            <h3 style="font-size:22px; font-weight:700; color:#1E3A8A; margin-bottom:4px;">🇮🇳 Central &amp; National Benefits</h3>
+            <p style="font-size:14px; color:#94A3B8;">Schemes from the Government of India — applicable nationwide</p>
+          </div>
+          <div id="nationalCards" style="display:flex; flex-direction:column; gap:20px;"></div>
+        </div>
+
+        <!-- State Column -->
+        <div>
+          <div class="col-header-state" style="margin-bottom:28px;">
+            <h3 id="stateColTitle" style="font-size:22px; font-weight:700; color:#047857; margin-bottom:4px;">🏛️ Regional &amp; State Benefits</h3>
+            <p id="stateColSub" style="font-size:14px; color:#94A3B8;">Schemes from your state government</p>
+          </div>
+          <div id="stateCards" style="display:flex; flex-direction:column; gap:20px;"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ FOOTER -->
+  <footer style="padding:40px 20px; text-align:center;">
+    <div class="max-w-3xl mx-auto">
+      <p style="font-family:'DM Serif Display',serif; font-size:20px; color:#1E3A8A; margin-bottom:8px;">Awsar Setu v2</p>
+      <p style="font-size:14px; color:#94A3B8; line-height:1.8;">
+        A National Welfare Routing Initiative. All scheme information sourced from official government portals.<br />
+        For in-person help, visit your nearest <strong>Mo Seva Kendra</strong> (Odisha) or <strong>Common Service Centre (CSC)</strong>.
+      </p>
+      <p style="font-size:12px; color:#CBD5E1; margin-top:14px;">© 2025 Awsar Setu. For informational purposes only. Last updated: January 2025.</p>
+    </div>
   </footer>
 
-  <script>
-    const form = document.getElementById("schemeForm");
-    const ageInput = document.getElementById("ageInput");
-    const stateSelect = document.getElementById("stateSelect");
-    const discoverBtn = document.getElementById("discoverBtn");
-    const statusBox = document.getElementById("statusBox");
-    const resultsShell = document.getElementById("resultsShell");
-    const resultsIntro = document.getElementById("resultsIntro");
-    const nationalResults = document.getElementById("nationalResults");
-    const stateResults = document.getElementById("stateResults");
-    const stateBenefitsTitle = document.getElementById("stateBenefitsTitle");
+<!-- ═══════════════════════════════════════════════════════════════ SCRIPT -->
+<script>
 
-    const API_BASE = "https://awsar-setu-v2.vercel.app/api/v2/schemes";
+// ─── SCHEME DATABASE ─────────────────────────────────────────────────────────
 
-    form.addEventListener("submit", async function (event) {
-      event.preventDefault();
+const NATIONAL = [
+  {
+    name: "Ayushman Bharat PM-JAY",
+    ministry: "Health & Family Welfare",
+    benefit: "₹5,00,000 HEALTH COVER / YEAR",
+    detail: "Cashless hospitalization at 25,000+ empanelled hospitals across India — covers pre-existing conditions from Day 1.",
+    eligibility: [
+      "BPL or SECC-2011 listed family",
+      "No restriction on family size or age",
+      "Pre-existing diseases covered immediately",
+      "Annual household income below ₹2,50,000"
+    ],
+    documents: ["Aadhaar Card", "Ration Card / SECC Letter", "Income Certificate"],
+    steps: [
+      "Visit any government hospital's Ayushman Mitra desk",
+      "Get eligibility verified on-the-spot using Aadhaar",
+      "Receive free PM-JAY Golden Card — treatment starts same day"
+    ],
+    location: "Nearest empanelled Government Hospital or Ayushman Bharat kiosk",
+    minAge: 0, maxAge: 120
+  },
+  {
+    name: "PM Jan Dhan Yojana (PMJDY)",
+    ministry: "Ministry of Finance",
+    benefit: "₹10,000 OVERDRAFT + ₹2 LAKH ACCIDENT COVER",
+    detail: "Zero-balance bank account with free RuPay debit card, ₹2 lakh accidental insurance, and ₹30,000 life cover.",
+    eligibility: [
+      "Any Indian citizen aged 10 years or above",
+      "No minimum balance required — zero-balance account",
+      "Free RuPay card with accidental insurance",
+      "Specially designed for unbanked and rural households"
+    ],
+    documents: ["Aadhaar Card", "PAN Card (optional)", "Passport-size photograph"],
+    steps: [
+      "Walk into any public sector bank branch (SBI, BoB, BoI, etc.)",
+      "Fill Form A — available free at the counter",
+      "Submit Aadhaar + photo; account opens same day"
+    ],
+    location: "Any Public Sector Bank, Post Office, or Business Correspondent (BC) Agent",
+    minAge: 10, maxAge: 120
+  },
+  {
+    name: "PM Ujjwala Yojana 2.0 (PMUY)",
+    ministry: "Ministry of Petroleum",
+    benefit: "FREE LPG CONNECTION + FIRST REFILL FREE",
+    detail: "Free LPG connection with deposit waiver for BPL women. Includes stove and first cylinder at no cost.",
+    eligibility: [
+      "Women aged 18 years or above from BPL/SC/ST household",
+      "Must NOT already have an LPG connection",
+      "Priority: migrant workers, homeless, and flood-affected families",
+      "Self-declaration of no existing connection is sufficient"
+    ],
+    documents: ["Aadhaar Card (Women applicant)", "Ration Card", "Bank Passbook", "Self-declaration form"],
+    steps: [
+      "Locate nearest distributor at mylpg.in or call 1906",
+      "Submit Aadhaar, ration card, and self-declaration form",
+      "Free cylinder and regulator delivered within 7 working days"
+    ],
+    location: "Nearest Indane / HP Gas / Bharat Gas Distributor",
+    minAge: 18, maxAge: 120
+  },
+  {
+    name: "PM KISAN Samman Nidhi",
+    ministry: "Ministry of Agriculture",
+    benefit: "₹6,000 / YEAR (₹2,000 EVERY 4 MONTHS)",
+    detail: "Direct income support to farmer families — transferred to bank account automatically every 4 months in 3 equal installments.",
+    eligibility: [
+      "Small and marginal farmers with cultivable land records",
+      "Valid Khasra/Khatauni (land ownership documents) required",
+      "Annual non-farm income below ₹2 lakh",
+      "Excludes government employees and income tax payees"
+    ],
+    documents: ["Aadhaar Card (Seeded to bank account)", "Land Records / Patta / Khatauni", "Bank Passbook"],
+    steps: [
+      "Visit nearest CSC centre or go to pmkisan.gov.in",
+      "Submit land records and link Aadhaar to bank account",
+      "₹2,000 credited automatically every 4 months — no further action needed"
+    ],
+    location: "Common Service Centre (CSC) or Gram Panchayat",
+    minAge: 18, maxAge: 120
+  },
+  {
+    name: "PM Awas Yojana – Gramin (PMAY-G)",
+    ministry: "Ministry of Rural Development",
+    benefit: "₹1,20,000 (PLAINS) / ₹1,30,000 (HILLY AREAS)",
+    detail: "Financial assistance to construct a permanent pucca house for SECC-listed homeless or kutcha-house households.",
+    eligibility: [
+      "Houseless or living in kutcha / dilapidated structure",
+      "Listed in SECC-2011 database",
+      "Priority to SC/ST, minorities, and physically disabled",
+      "Must not have received any government housing benefit earlier"
+    ],
+    documents: ["Aadhaar Card (all adult members)", "MGNREGA Job Card", "Bank Passbook", "Consent for geo-tagging"],
+    steps: [
+      "Check eligibility at pmayg.nic.in or Gram Panchayat notice board",
+      "BDO conducts field verification and approves the application",
+      "Fund released in 3 installments — upload geotagged photos at each stage via AwaasSoft app"
+    ],
+    location: "Gram Panchayat or Block Development Office (BDO)",
+    minAge: 18, maxAge: 120
+  },
+  {
+    name: "National Social Assistance Programme (NSAP)",
+    ministry: "Ministry of Rural Development",
+    benefit: "₹200 – ₹500 MONTHLY PENSION",
+    detail: "Central social security pension for BPL elderly, widows, and persons with severe disability.",
+    eligibility: [
+      "Age 60+ for Indira Gandhi Old Age Pension (IGNOAPS)",
+      "Widows aged 40–79 for Widow Pension (IGNWPS)",
+      "80%+ disability for National Disability Pension (IGNDPS)",
+      "Must belong to a BPL household (ration card required)"
+    ],
+    documents: ["Aadhaar Card", "BPL Ration Card", "Age / Widow / Disability Certificate", "Bank Passbook"],
+    steps: [
+      "Collect free application form from Block Development Office or Gram Panchayat",
+      "Submit with all supporting documents to the BDO",
+      "BDO verification completed within 30 days",
+      "Pension credited to bank account on 1st of every month"
+    ],
+    location: "Block Development Office (BDO) or Gram Panchayat",
+    minAge: 40, maxAge: 120
+  },
+  {
+    name: "Pradhan Mantri Mudra Yojana (PMMY)",
+    ministry: "Ministry of Finance",
+    benefit: "LOAN UP TO ₹10,00,000 — NO COLLATERAL",
+    detail: "Collateral-free enterprise loans in 3 tiers: Shishu (₹50K), Kishore (₹5L), Tarun (₹10L). For artisans, traders, and small manufacturers.",
+    eligibility: [
+      "Non-corporate, non-farm small business owners",
+      "Age 18–65 years — no prior credit history needed for Shishu tier",
+      "Artisans, shopkeepers, hawkers, service providers",
+      "Manufacturing, trading, and services sectors all eligible"
+    ],
+    documents: ["Aadhaar Card", "PAN Card", "Business proof or activity description", "6-month bank statement (for Kishore/Tarun tier)"],
+    steps: [
+      "Walk into any bank, MFI, or NBFC with basic documents",
+      "Fill Mudra loan application form (free at counter or on mudra.org.in)",
+      "Loan sanctioned within 7–10 working days for Shishu tier"
+    ],
+    location: "Any Public / Private / Cooperative Bank, Microfinance Institution (MFI), or NBFC",
+    minAge: 18, maxAge: 65
+  },
+  {
+    name: "PM Scholarship Scheme (PMSS)",
+    ministry: "Ministry of Education",
+    benefit: "₹25,000/YEAR (Boys) • ₹30,000/YEAR (Girls)",
+    detail: "Annual scholarship for wards and widows of ex-servicemen, CAPF, and police personnel martyred in service.",
+    eligibility: [
+      "Age 17–25 years studying in a recognized professional course",
+      "Child or widow of ex-serviceman / CRPF / police martyr",
+      "Minimum 60% marks in Class 12 / Diploma",
+      "Only ONE scholarship per student per year"
+    ],
+    documents: ["Aadhaar Card", "Class 12 Marksheet", "Parent's Discharge / Death Certificate", "Bank Account (student's own name)"],
+    steps: [
+      "Register at National Scholarship Portal: scholarships.gov.in",
+      "Upload all documents in PDF (max 200KB each)",
+      "Scholarship directly disbursed to student's bank account"
+    ],
+    location: "Apply fully online at scholarships.gov.in — no physical visit required",
+    minAge: 17, maxAge: 25
+  },
+];
 
-      const age = ageInput.value.trim();
-      const state = stateSelect.value.trim();
+const STATE_DATA = {
+  "Odisha": [
+    {
+      name: "Biju Swasthya Kalyan Yojana (BSKY)",
+      ministry: "Odisha Health Dept.",
+      benefit: "₹5,00,000/YEAR (Women: ₹10,00,000/YEAR)",
+      detail: "Cashless treatment for 500+ illnesses and surgeries at government and empanelled private hospitals in Odisha.",
+      eligibility: [
+        "All Odisha ration card holders — Yellow / Green / White card",
+        "Women beneficiaries get DOUBLE coverage (₹10 lakh/year)",
+        "Covers 500+ procedures including cancer and organ transplants",
+        "No age restriction — entire family covered under one card"
+      ],
+      documents: ["Smart Ration Card (Yellow/Green/White)", "Aadhaar Card", "BSKY Smart Card (issued free at Mo Seva Kendra)"],
+      steps: [
+        "Visit nearest Mo Seva Kendra to get your BSKY Smart Card (free, 10 minutes)",
+        "Carry Smart Card + Aadhaar to any empanelled hospital",
+        "Treatment is 100% cashless — no advance payment at all"
+      ],
+      location: "Mo Seva Kendra (for card) → Any empanelled hospital in Odisha (for treatment)",
+      minAge: 0, maxAge: 120
+    },
+    {
+      name: "KALIA Scheme (Krushak Assistance for Livelihood & Income Augmentation)",
+      ministry: "Odisha Agriculture Dept.",
+      benefit: "₹10,000 / YEAR PER FARMER FAMILY",
+      detail: "Comprehensive assistance covering cultivation support, livelihood aid, vulnerability assistance, and life insurance for Odisha farmers.",
+      eligibility: [
+        "Small and marginal farmers in Odisha with land records",
+        "Landless agricultural labourers and sharecroppers",
+        "Vulnerable agri households (elderly, disabled, illness-affected)",
+        "Age 18–60 years for vulnerability component"
+      ],
+      documents: ["Aadhaar Card (linked to bank account)", "Land Records / Patta", "Bank Passbook"],
+      steps: [
+        "Check your name at kalia.odisha.gov.in or Gram Panchayat board",
+        "Gram Sabha approves and finalizes the annual beneficiary list",
+        "₹5,000 credited twice a year directly to your bank account"
+      ],
+      location: "Block Agriculture Office or Gram Panchayat",
+      minAge: 18, maxAge: 120
+    },
+    {
+      name: "Madhu Babu Pension Yojana (MBPY)",
+      ministry: "Odisha Social Security Dept.",
+      benefit: "₹500/MONTH (Age 60–79) • ₹700/MONTH (Age 80+)",
+      detail: "Monthly state social security pension for BPL elderly, widows, and disabled persons of Odisha.",
+      eligibility: [
+        "Age 60+ for old-age pension category",
+        "Widows aged 40 years and above",
+        "Persons with 40%+ permanent disability of any age",
+        "Must hold a BPL ration card (Yellow/Green)"
+      ],
+      documents: ["Aadhaar Card", "BPL Ration Card", "Age / Widow / Disability Certificate", "Bank Passbook"],
+      steps: [
+        "Collect free form from Block Development Office (BDO)",
+        "Attach all required documents and submit at BDO counter",
+        "BDO field verification completed within 45 days",
+        "Monthly pension credited directly to bank account"
+      ],
+      location: "Block Development Office (BDO) or District Social Security Officer",
+      minAge: 40, maxAge: 120
+    },
+    {
+      name: "Gopabandhu Jan Arogya Yojana (GJAY)",
+      ministry: "Odisha Health Dept.",
+      benefit: "FREE MEDICINES + FREE DIAGNOSTICS",
+      detail: "Universal free medicines (900+ drugs) and free diagnostic tests at all government health facilities in Odisha — no ration card or registration needed.",
+      eligibility: [
+        "ALL Odisha residents — no income limit whatsoever",
+        "Available at every PHC, CHC, Sub-Divisional Hospital, DHH",
+        "Covers 900+ essential medicines on the state formulary",
+        "X-ray, blood tests, urine tests, ultrasound — all free"
+      ],
+      documents: ["Any government photo ID (Aadhaar / Voter ID)", "No prior registration required"],
+      steps: [
+        "Walk into any government health centre or hospital",
+        "Show any government-issued photo ID at the OPD counter",
+        "Medicines and tests provided completely free — no form needed"
+      ],
+      location: "Any PHC, CHC, Sub-Divisional Hospital, or District HQ Hospital in Odisha",
+      minAge: 0, maxAge: 120
+    },
+    {
+      name: "Mo Ghara Yojana (Odisha Urban Housing)",
+      ministry: "Odisha H&UD Dept.",
+      benefit: "SUBSIDY UP TO ₹1,50,000 + BANK LOAN FACILITATION",
+      detail: "Housing assistance with government subsidy for EWS and LIG urban households. Loan tied up with banks at reduced rates.",
+      eligibility: [
+        "Urban household with annual income below ₹6 lakh (LIG)",
+        "Must NOT own a pucca house in any urban area of Odisha",
+        "Age 21–55 years (for loan repayment eligibility)",
+        "Permanent resident of Odisha with domicile certificate"
+      ],
+      documents: ["Aadhaar Card", "Income Certificate (from Tehsildar)", "Land / Plot ownership proof", "Bank Passbook"],
+      steps: [
+        "Apply at Mo Seva Kendra or nearest Urban Local Body (ULB) office",
+        "Bank verifies income and land documents within 15 days",
+        "Government subsidy credited directly to loan account — EMI reduced automatically"
+      ],
+      location: "Mo Seva Kendra or Urban Local Body (ULB) / Municipal Office",
+      minAge: 21, maxAge: 55
+    },
+  ],
+  "Uttar Pradesh": [
+    {
+      name: "Mukhyamantri Jan Arogya Abhiyan (MMJAA)",
+      ministry: "UP Health & Family Welfare",
+      benefit: "₹5,00,000 HEALTH COVER / YEAR",
+      detail: "State health insurance for UP residents not covered under PMJAY — provides cashless treatment at government and empanelled hospitals.",
+      eligibility: [
+        "UP residents not in SECC-2011 database or excluded from PMJAY",
+        "BPL, small traders, artisans, and labour households",
+        "All age groups — family floater basis",
+        "Self-certification of income below ₹1 lakh acceptable"
+      ],
+      documents: ["Aadhaar Card", "Ration Card (any colour)", "Domicile / Residence proof"],
+      steps: [
+        "Visit any UP government hospital with Aadhaar + Ration Card",
+        "Ayushman Mitra at hospital verifies eligibility on-the-spot",
+        "Golden Card issued and cashless treatment begins immediately"
+      ],
+      location: "Any Government Hospital or CHC in Uttar Pradesh",
+      minAge: 0, maxAge: 120
+    },
+    {
+      name: "Kanya Sumangala Yojana (KSY)",
+      ministry: "UP Women & Child Development",
+      benefit: "₹25,000 TOTAL (IN 6 STAGE INSTALLMENTS)",
+      detail: "Financial incentive for girl children from birth through post-graduation, released in 6 structured tranches.",
+      eligibility: [
+        "Girl child born on or after 1 April 2019",
+        "Family annual income below ₹3 lakh",
+        "Maximum 2 daughters per family eligible",
+        "Must be permanent resident of Uttar Pradesh"
+      ],
+      documents: ["Birth Certificate (girl child)", "Aadhaar (parents)", "Income Certificate", "Bank account in girl's name (or guardian's)"],
+      steps: [
+        "Apply online at mksy.up.gov.in or visit nearest DPO office",
+        "Upload documents — approval within 30 days",
+        "Amount credited automatically at each educational milestone"
+      ],
+      location: "Online: mksy.up.gov.in | Offline: District Probation Officer (DPO) Office",
+      minAge: 0, maxAge: 21
+    },
+  ],
+  "Maharashtra": [
+    {
+      name: "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY)",
+      ministry: "Maharashtra Health Dept.",
+      benefit: "₹5,00,000 HEALTH COVER / YEAR",
+      detail: "State health insurance for major surgeries, organ transplants, and critical care at 500+ empanelled hospitals in Maharashtra.",
+      eligibility: [
+        "Yellow / Orange / Antyodaya ration card holders in Maharashtra",
+        "All farmers in Maharashtra districts — automatic eligibility",
+        "Annual household income below ₹1 lakh (general category)",
+        "All age groups — family floater basis"
+      ],
+      documents: ["Ration Card (Orange/Yellow/Antyodaya)", "Aadhaar Card", "Maharashtra Domicile Certificate"],
+      steps: [
+        "Visit any empanelled hospital in Maharashtra",
+        "Show ration card and Aadhaar at the Arogyamitra desk",
+        "Cashless treatment authorized from Day 1 — no upfront payment"
+      ],
+      location: "Any empanelled Government or Private Hospital in Maharashtra",
+      minAge: 0, maxAge: 120
+    },
+  ],
+  "Bihar": [
+    {
+      name: "Mukhyamantri Kanya Utthan Yojana",
+      ministry: "Bihar Social Welfare Dept.",
+      benefit: "₹50,000 TOTAL (BIRTH TO GRADUATION)",
+      detail: "Progressive financial incentives for girl children from birth through graduation across 6 milestone tranches.",
+      eligibility: [
+        "Girl child — permanent resident of Bihar",
+        "Family annual income below ₹1.5 lakh",
+        "Must attend government / government-aided school",
+        "Maximum 2 girls eligible per family"
+      ],
+      documents: ["Birth Certificate", "Aadhaar (parents and child)", "Bank account (girl's)", "School enrollment certificate"],
+      steps: [
+        "Apply at RTPS counter or online at icdsonline.bih.nic.in",
+        "Submit income and birth documents to block office",
+        "Amount released automatically at each educational milestone to bank account"
+      ],
+      location: "RTPS Counter, Block Office, or online: icdsonline.bih.nic.in",
+      minAge: 0, maxAge: 25
+    },
+  ],
+  "Tamil Nadu": [
+    {
+      name: "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS)",
+      ministry: "Tamil Nadu Health Dept.",
+      benefit: "₹5,00,000 HEALTH COVER / YEAR",
+      detail: "Comprehensive health insurance for TN families at 1,100+ empanelled hospitals — covers 1,016 procedures.",
+      eligibility: [
+        "Annual family income below ₹72,000 (₹6,000/month)",
+        "All family members covered under one policy",
+        "Must possess valid government-issued income certificate",
+        "Covers 1,016 procedures including cancer care and organ transplants"
+      ],
+      documents: ["Aadhaar Card", "Income Certificate (below ₹72,000/year)", "Family card / ration card"],
+      steps: [
+        "Enrol at nearest government hospital with income certificate + Aadhaar",
+        "Insurance card issued free within 15 minutes",
+        "Cashless treatment at any of 1,100+ empanelled hospitals"
+      ],
+      location: "District Government Hospital or Taluk Hospital in Tamil Nadu",
+      minAge: 0, maxAge: 120
+    },
+  ],
+};
 
-      if (!age || Number(age) < 0 || Number(age) > 125 || !state) {
-        showStatus(
-          "Please enter a valid age and select your state. Small details matter, because bureaucracy already enjoys making life complicated.",
-          "warning"
-        );
-        return;
-      }
+function getDefaultStateSchemes(state) {
+  return [
+    {
+      name: `${state} Chief Minister Relief Fund (CMRF)`,
+      ministry: `${state} Government`,
+      benefit: "FINANCIAL AID (CASE-BY-CASE BASIS)",
+      detail: "Emergency financial relief for critical illness, natural disaster losses, and acute poverty-related hardship.",
+      eligibility: [
+        `Permanent resident of ${state}`,
+        "Genuine financial hardship — verified by District Collector",
+        "No income ceiling for medical emergencies",
+        "Priority given to BPL / disaster-affected households"
+      ],
+      documents: ["Aadhaar Card", "Medical documents (for health aid)", "Bank Passbook", "Self-declaration / FIR (for disaster cases)"],
+      steps: [
+        `Contact District Collector's office in your district`,
+        "Submit written application with supporting documents",
+        "District committee reviews and sanctions within 30 working days"
+      ],
+      location: "District Collector's Office or State CM Relief Fund helpline",
+      minAge: 0, maxAge: 120
+    },
+    {
+      name: `${state} Old Age Pension Scheme`,
+      ministry: `${state} Social Welfare Dept.`,
+      benefit: "₹500 – ₹1,000 MONTHLY PENSION",
+      detail: "State social security pension for elderly BPL citizens who do not receive any other government pension.",
+      eligibility: [
+        "Age 60 years or above",
+        `Permanent resident of ${state}`,
+        "BPL household OR annual income below ₹1 lakh",
+        "Must NOT already receive any central or state pension"
+      ],
+      documents: ["Aadhaar Card", "Age Proof (Birth / School Certificate / Aadhaar)", "Income / BPL Certificate", "Bank Passbook"],
+      steps: [
+        "Collect free application form from Block Development Office",
+        "Attach all documents and submit to Block Development Officer (BDO)",
+        "Pension credited monthly to bank account after verification"
+      ],
+      location: "Block Development Office (BDO) or District Social Welfare Office",
+      minAge: 60, maxAge: 120
+    },
+    {
+      name: "PM Garib Kalyan Ann Yojana (PMGKAY) — Free Ration",
+      ministry: "Ministry of Food & Civil Supplies",
+      benefit: "FREE 5 KG GRAIN PER PERSON PER MONTH",
+      detail: "Free monthly grain (rice/wheat) for all NFSA ration card holders under National Food Security Act — no cash payment needed.",
+      eligibility: [
+        "Any ration card holder — Antyodaya or Priority Household",
+        "All age groups — every listed family member receives 5 kg",
+        "No income certificate needed if ration card exists",
+        "Rural and urban poor equally eligible"
+      ],
+      documents: ["Ration Card (Smart Card)", "Aadhaar Card (for biometric verification at PDS shop)"],
+      steps: [
+        "Check your designated fair price shop (ration shop) date on the notice board",
+        "Visit the shop and give biometric fingerprint verification using Aadhaar",
+        "Collect free 5 kg grain per person — absolutely zero payment"
+      ],
+      location: "Your designated Fair Price Shop (FPS / PDS Ration Shop)",
+      minAge: 0, maxAge: 120
+    },
+  ];
+}
 
-      setLoading(true);
-      activateResults(state);
+// ─── CARD BUILDER ────────────────────────────────────────────────────────────
 
-      const requestUrl = `${API_BASE}?age=${encodeURIComponent(age)}&state=${encodeURIComponent(state)}`;
+function buildCard(s) {
+  const elItems = s.eligibility.map(e =>
+    `<li style="display:flex;align-items:flex-start;gap:9px;margin-bottom:8px;font-size:15px;color:#475569;line-height:1.5;">
+       <span style="color:#2563EB;margin-top:2px;flex-shrink:0;">▸</span>
+       <span>${e}</span>
+     </li>`
+  ).join('');
 
-      try {
-        const response = await fetch(requestUrl, {
-          method: "GET",
-          headers: {
-            "Accept": "application/json"
-          }
-        });
+  const stepItems = s.steps.map((step, i) =>
+    `<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;">
+       <div style="min-width:26px;height:26px;background:#B45309;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px;flex-shrink:0;">${i+1}</div>
+       <span style="font-size:14.5px;color:#78350F;line-height:1.6;">${step}</span>
+     </div>`
+  ).join('');
 
-        if (!response.ok) {
-          throw new Error(`Server responded with status ${response.status}`);
-        }
+  const docPills = s.documents.map(d =>
+    `<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:99px;background:white;border:1.5px solid rgba(30,58,138,0.18);font-size:12px;font-weight:600;color:#1E3A8A;white-space:nowrap;">📄 ${d}</span>`
+  ).join('');
 
-        const data = await response.json();
+  const card = document.createElement('div');
+  card.className = 'scheme-card';
+  card.innerHTML = `
+    <div style="padding:26px 26px 20px;">
 
-        const nationalSchemes = getArrayFromPossibleKeys(data, [
-          "national",
-          "central",
-          "nationalSchemes",
-          "centralSchemes",
-          "central_and_national",
-          "centralBenefits"
-        ]);
+      <!-- Header -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px;">
+        <h4 style="font-size:18px;font-weight:700;color:#1E3A8A;line-height:1.3;flex:1;">${s.name}</h4>
+        <span style="flex-shrink:0;padding:4px 10px;border-radius:99px;background:#EFF6FF;border:1.5px solid rgba(30,58,138,0.18);font-size:11px;font-weight:700;color:#1E3A8A;letter-spacing:0.04em;text-align:center;max-width:140px;word-break:break-word;">
+          ${s.ministry}
+        </span>
+      </div>
 
-        const stateSchemes = getArrayFromPossibleKeys(data, [
-          "state",
-          "regional",
-          "stateSchemes",
-          "regionalSchemes",
-          "stateBenefits",
-          "regionalBenefits"
-        ]);
+      <!-- Benefit Banner -->
+      <div class="benefit-bar" style="padding:16px;margin-bottom:18px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.1em;color:#047857;margin-bottom:5px;">💰 FINANCIAL BENEFIT</div>
+        <div style="font-size:21px;font-weight:800;color:#047857;letter-spacing:-0.01em;line-height:1.2;margin-bottom:6px;">${s.benefit}</div>
+        <p style="font-size:13.5px;color:#065F46;line-height:1.5;">${s.detail}</p>
+      </div>
 
-        nationalResults.innerHTML = "";
-        stateResults.innerHTML = "";
+      <!-- Eligibility -->
+      <div style="margin-bottom:16px;">
+        <p style="font-size:11.5px;font-weight:800;letter-spacing:0.1em;color:#CBD5E1;text-transform:uppercase;margin-bottom:10px;">Eligibility Criteria</p>
+        <ul style="list-style:none;margin:0;padding:0;">${elItems}</ul>
+      </div>
 
-        renderSchemeList(nationalSchemes, nationalResults, "national");
-        renderSchemeList(stateSchemes, stateResults, "state");
+      <!-- Documents -->
+      <div>
+        <p style="font-size:11.5px;font-weight:800;letter-spacing:0.1em;color:#CBD5E1;text-transform:uppercase;margin-bottom:10px;">Required Documents</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">${docPills}</div>
+      </div>
+    </div>
 
-        const totalMatches = nationalSchemes.length + stateSchemes.length;
+    <!-- Apply Strip -->
+    <div class="apply-strip" style="padding:22px 26px;">
+      <p style="font-size:15px;font-weight:700;color:#B45309;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" fill="none" stroke="#B45309" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        How to Apply Right Now
+      </p>
+      <div style="margin-bottom:14px;">${stepItems}</div>
+      <div style="background:white;border-radius:12px;border:1.5px solid rgba(180,83,9,0.14);padding:14px;">
+        <p style="font-size:11px;font-weight:800;letter-spacing:0.08em;color:#B45309;margin-bottom:5px;">📍 WHERE TO GO</p>
+        <p style="font-size:14.5px;color:#78350F;line-height:1.5;">${s.location}</p>
+      </div>
+    </div>
+  `;
+  return card;
+}
 
-        if (totalMatches === 0) {
-          const message = "No matching schemes were found for this age tier. Please double-check your age and state, then try again.";
-          nationalResults.innerHTML = createEmptyBanner(message);
-          stateResults.innerHTML = createEmptyBanner("Try a different age or confirm the selected state spelling.");
-          showStatus(message, "warning");
-        } else {
-          showStatus(`Found ${totalMatches} possible benefit route${totalMatches === 1 ? "" : "s"} for age ${escapeHTML(age)} in ${escapeHTML(state)}.`, "success");
-        }
-      } catch (error) {
-        nationalResults.innerHTML = createEmptyBanner("We could not load central schemes right now. Please try again after a moment.");
-        stateResults.innerHTML = createEmptyBanner("We could not load state schemes right now. Your details were not saved.");
-        showStatus("Unable to connect to the scheme server right now. No login was used and no details were stored.", "error");
-        console.error("Awsar Setu API error:", error);
-      } finally {
-        setLoading(false);
-      }
-    });
+function buildEmpty(type) {
+  const div = document.createElement('div');
+  div.style.cssText = 'text-align:center;padding:56px 24px;border-radius:20px;border:2px dashed rgba(30,58,138,0.12);background:white;';
+  div.innerHTML = `
+    <div style="font-size:42px;margin-bottom:12px;">${type === 'national' ? '🇮🇳' : '🏛️'}</div>
+    <p style="font-size:16.5px;font-weight:600;color:#94A3B8;margin-bottom:6px;">No schemes found for your profile here.</p>
+    <p style="font-size:14px;color:#CBD5E1;">Double-check your age entry above and try again.</p>
+  `;
+  return div;
+}
 
-    function activateResults(state) {
-      resultsShell.classList.remove("opacity-45", "grayscale");
-      resultsShell.classList.add("opacity-100");
-      resultsIntro.textContent = `Showing welfare routes for ${state}.`;
-      stateBenefitsTitle.textContent = `🏛️ ${state} State Benefits`;
-    }
+// ─── MAIN LOGIC ──────────────────────────────────────────────────────────────
 
-    function setLoading(isLoading) {
-      discoverBtn.disabled = isLoading;
-      discoverBtn.classList.toggle("opacity-70", isLoading);
-      discoverBtn.classList.toggle("cursor-not-allowed", isLoading);
-      discoverBtn.textContent = isLoading ? "Checking Available Schemes..." : "Discover My Schemes";
-    }
+document.getElementById('discoverBtn').addEventListener('click', async function () {
+  const ageRaw  = document.getElementById('ageInput').value.trim();
+  const state   = document.getElementById('stateSelect').value;
+  const ageInp  = document.getElementById('ageInput');
+  const stateEl = document.getElementById('stateSelect');
 
-    function showStatus(message, type) {
-      const styles = {
-        success: "border-emerald-200 bg-emerald-50 text-emeraldTrust",
-        warning: "border-amber-200 bg-amber-50 text-amberCare",
-        error: "border-red-200 bg-red-50 text-red-700"
-      };
+  // Validate age
+  if (!ageRaw || isNaN(ageRaw) || +ageRaw < 1 || +ageRaw > 120) {
+    ageInp.classList.add('error');
+    ageInp.focus();
+    setTimeout(() => ageInp.classList.remove('error'), 2500);
+    return;
+  }
+  // Validate state
+  if (!state) {
+    stateEl.classList.add('error');
+    stateEl.focus();
+    setTimeout(() => stateEl.classList.remove('error'), 2500);
+    return;
+  }
 
-      statusBox.className = `mt-6 rounded-3xl border px-5 py-4 text-lg font-bold ${styles[type] || styles.warning}`;
-      statusBox.textContent = message;
-      statusBox.classList.remove("hidden");
-    }
+  const age = parseInt(ageRaw, 10);
+  const btn = this;
 
-    function getArrayFromPossibleKeys(data, keys) {
-      if (Array.isArray(data)) {
-        return data;
-      }
+  // Loading state
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div><span>Finding your schemes...</span>';
 
-      for (const key of keys) {
-        if (Array.isArray(data?.[key])) {
-          return data[key];
-        }
-      }
+  // Update result headings
+  document.getElementById('stateColTitle').textContent = `🏛️ ${state} State Benefits`;
+  document.getElementById('stateColSub').textContent   = `Schemes from ${state} Government`;
+  document.getElementById('resultsSubtitle').textContent = `Showing eligible schemes for Age ${age} in ${state}`;
 
-      if (Array.isArray(data?.data)) {
-        return data.data;
-      }
+  try {
+    const res = await fetch(
+      `https://awsar-setu-v2.vercel.app/api/v2/schemes?age=${age}&state=${encodeURIComponent(state)}`,
+      { signal: AbortSignal.timeout(5000) }
+    );
+    if (!res.ok) throw new Error('non-2xx');
+    const data = await res.json();
+    renderResults(data.national || [], data.state || []);
+  } catch (_) {
+    // Fallback to embedded demo data
+    const national = NATIONAL.filter(s => age >= s.minAge && age <= s.maxAge);
+    const stateArr = (STATE_DATA[state] || getDefaultStateSchemes(state))
+      .filter(s => age >= (s.minAge || 0) && age <= (s.maxAge || 120));
+    renderResults(national, stateArr);
+  }
 
-      if (typeof data?.data === "object" && data.data !== null) {
-        for (const key of keys) {
-          if (Array.isArray(data.data[key])) {
-            return data.data[key];
-          }
-        }
-      }
+  btn.disabled = false;
+  btn.innerHTML = `
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    Discover My Schemes`;
+});
 
-      return [];
-    }
+function renderResults(national, stateArr) {
+  const natBox   = document.getElementById('nationalCards');
+  const stateBox = document.getElementById('stateCards');
+  natBox.innerHTML   = '';
+  stateBox.innerHTML = '';
 
-    function renderSchemeList(schemes, container, type) {
-      if (!schemes.length) {
-        container.innerHTML = createEmptyBanner(
-          type === "national"
-            ? "No central schemes matched this entry."
-            : "No state schemes matched this entry."
-        );
-        return;
-      }
+  if (national.length)  national.forEach(s  => natBox.appendChild(buildCard(s)));
+  else                  natBox.appendChild(buildEmpty('national'));
 
-      const html = schemes.map(function (scheme) {
-        return createSchemeCard(normalizeScheme(scheme));
-      }).join("");
+  if (stateArr.length)  stateArr.forEach(s => stateBox.appendChild(buildCard(s)));
+  else                  stateBox.appendChild(buildEmpty('state'));
 
-      container.innerHTML = html;
-    }
+  const sec = document.getElementById('resultsSection');
+  sec.classList.add('show');
+  setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+}
 
-    function normalizeScheme(scheme) {
-      const eligibility = toCleanArray(
-        scheme.eligibility ||
-        scheme.criteria ||
-        scheme.coreEligibility ||
-        scheme.eligibility_points ||
-        scheme.requirements
-      );
-
-      const applySteps = toCleanArray(
-        scheme.applySteps ||
-        scheme.applicationSteps ||
-        scheme.howToApply ||
-        scheme.apply_now ||
-        scheme.process
-      );
-
-      const documents = toCleanArray(
-        scheme.documents ||
-        scheme.requiredDocuments ||
-        scheme.required_docs ||
-        scheme.identityDocuments
-      );
-
-      return {
-        name: scheme.name || scheme.schemeName || scheme.title || "Unnamed Welfare Scheme",
-        department: scheme.department || scheme.ministry || scheme.authority || scheme.departmentName || "Government Department",
-        benefit: scheme.benefit || scheme.financialBenefit || scheme.cashBenefit || scheme.amount || "Benefit details available through official verification",
-        eligibility: eligibility.length ? eligibility : [
-          "Applicant must satisfy the official age and residence rules.",
-          "Income ceiling, gender category, caste category, or occupation rules may apply.",
-          "Final approval depends on government verification."
-        ],
-        applyLocation: scheme.applyLocation || scheme.location || scheme.office || "Nearest government service centre",
-        applySteps: applySteps.length ? applySteps : [
-          "Visit the nearest service centre or official department office.",
-          "Ask for the application form or online service route for this scheme."
-        ],
-        documents: documents.length ? documents : [
-          "Aadhaar card",
-          "Bank passbook",
-          "Residence proof",
-          "Income certificate if applicable",
-          "Passport-size photograph"
-        ]
-      };
-    }
-
-    function createSchemeCard(scheme) {
-      const eligibilityItems = scheme.eligibility.map(item => `<li>${escapeHTML(item)}</li>`).join("");
-      const applyItems = scheme.applySteps.map(item => `<li>${escapeHTML(item)}</li>`).join("");
-      const documentItems = scheme.documents.map(item => `<li>${escapeHTML(item)}</li>`).join("");
-
-      return `
-        <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lift">
-          <div class="flex flex-wrap items-start justify-between gap-3">
-            <h3 class="text-2xl font-black leading-tight text-navy">${escapeHTML(scheme.name)}</h3>
-            <span class="rounded-full bg-blue-50 px-3 py-1 text-sm font-black text-navy">${escapeHTML(scheme.department)}</span>
-          </div>
-
-          <div class="mt-4 rounded-2xl bg-emerald-50 p-4 ring-1 ring-emerald-100">
-            <p class="text-sm font-black uppercase tracking-wide text-emeraldTrust">Financial Benefit</p>
-            <p class="mt-1 text-2xl font-black leading-snug text-emeraldTrust">${escapeHTML(scheme.benefit)}</p>
-          </div>
-
-          <div class="mt-5">
-            <h4 class="text-lg font-black text-slate-950">Core Eligibility</h4>
-            <ul class="mt-2 list-disc space-y-2 pl-6 text-lg font-medium leading-7 text-slate-700">
-              ${eligibilityItems}
-            </ul>
-          </div>
-
-          <div class="mt-5 rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-100">
-            <h4 class="text-lg font-black text-amberCare">How to Apply right now</h4>
-            <p class="mt-2 text-base font-black text-amber-950">
-              Visit: ${escapeHTML(scheme.applyLocation)}
-            </p>
-
-            <div class="mt-3 grid gap-4 sm:grid-cols-2">
-              <div>
-                <p class="text-sm font-black uppercase tracking-wide text-amberCare">Steps</p>
-                <ul class="mt-2 list-disc space-y-2 pl-5 text-base font-bold leading-6 text-amber-950">
-                  ${applyItems}
-                </ul>
-              </div>
-
-              <div>
-                <p class="text-sm font-black uppercase tracking-wide text-amberCare">Documents</p>
-                <ul class="mt-2 list-disc space-y-2 pl-5 text-base font-bold leading-6 text-amber-950">
-                  ${documentItems}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    function createEmptyBanner(message) {
-      return `
-        <div class="rounded-3xl border border-amber-200 bg-amber-50 p-5 text-lg font-bold leading-7 text-amberCare">
-          ${escapeHTML(message)}
-        </div>
-      `;
-    }
-
-    function toCleanArray(value) {
-      if (Array.isArray(value)) {
-        return value.filter(Boolean).map(item => String(item).trim()).filter(Boolean);
-      }
-
-      if (typeof value === "string") {
-        return value
-          .split(/\n|;|\|/g)
-          .map(item => item.trim())
-          .filter(Boolean);
-      }
-
-      return [];
-    }
-
-    function escapeHTML(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-  </script>
+</script>
 </body>
 </html>
