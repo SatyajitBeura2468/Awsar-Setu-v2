@@ -103,6 +103,8 @@ STATE_ALIASES = {
     "TN": "TN",
 }
 
+OLD_API_BASE = "https://awsar-setu-v2.vercel.app"
+
 
 def normalize_state(state: str) -> str:
     normalized = state.strip().upper()
@@ -123,7 +125,8 @@ def read_root():
     filepath = os.path.join(os.path.dirname(__file__), "index.html")
     if os.path.exists(filepath):
         with open(filepath, "r", encoding="utf-8") as f:
-            return f.read()
+            html = f.read()
+        return html.replace(OLD_API_BASE, "")
     return "<h1>Awsar Setu is running.</h1><p>index.html was not found in this deployment.</p>"
 
 
