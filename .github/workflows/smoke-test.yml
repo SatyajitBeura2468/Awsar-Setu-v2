@@ -1,0 +1,36 @@
+name: Smoke test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify app imports
+        run: python -c "from main import app; print(app.title)"
+
+      - name: Verify health endpoint
+        run: python - <<'PY'
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
+response = client.get('/health')
+assert response.status_code == 200
+assert response.json()['status'] == 'ok'
+PY
